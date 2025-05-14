@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.application'
-	id 'antlr'
 }
 
 android {
@@ -32,17 +31,6 @@ sourceSets {
     }
 }
     
-tasks.whenTaskAdded { task ->
-    if (task.name == 'compileDebugJavaWithJavac' || task.name == 'compileReleaseJavaWithJavac') {
-        task.dependsOn 'generateGrammarSource'
-    }
-}
-
-generateGrammarSource {
-    arguments += ["-visitor", "-package", "com.example.codeditor.antlr"]
-    outputDirectory = file("src/main/java/com/example/codeditor/antlr")
-}
-
 dependencies {
 	// CodeAssist does NOT support adding dependencies here,
 	// try using the library manager instead
