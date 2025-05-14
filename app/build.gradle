@@ -1,0 +1,41 @@
+plugins {
+    id 'com.android.application'
+	id 'antlr'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.example.codeditor"
+        minSdk 26
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+generateGrammarSource {
+    arguments += ["-visitor", "-package", "com.example.codeditor.antlr"]
+    outputDirectory = file("src/main/java/com/example/codeditor/antlr")
+}
+
+dependencies {
+	// CodeAssist does NOT support adding dependencies here,
+	// try using the library manager instead
+    implementation 'com.fifesoft:rsyntaxtextarea:3.3.0'
+	antlr 'org.antlr:antlr4:4.9.3' 
+    implementation 'org.antlr:antlr4-runtime:4.9.3'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'org.eclipse.jdt:org.eclipse.jdt.core:3.40.0'
+}

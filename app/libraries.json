@@ -1,0 +1,26 @@
+[
+  {
+    "artifactId": "rsyntaxtextarea",
+    "excludes": [],
+    "groupId": "com.fifesoft",
+    "versionName": "3.3.0"
+  },
+  {
+    "artifactId": "antlr4-runtime",
+    "excludes": [],
+    "groupId": "org.antlr",
+    "versionName": "4.9.3"
+  },
+  {
+    "artifactId": "recyclerview",
+    "excludes": [],
+    "groupId": "androidx.recyclerview",
+    "versionName": "1.2.1"
+  },
+  {
+    "artifactId": "org.eclipse.jdt.core",
+    "excludes": [],
+    "groupId": "org.eclipse.jdt",
+    "versionName": "3.40.0"
+  }
+]
