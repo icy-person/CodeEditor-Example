@@ -24,7 +24,19 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+sourceSets {
+        main {
+            java.srcDirs += 'src/main/java/com/example/codeditor/antlr'
+        }
+    }
 }
+    
+tasks.whenTaskAdded { task ->
+    if (task.name == 'compileDebugJavaWithJavac' || task.name == 'compileReleaseJavaWithJavac') {
+        task.dependsOn 'generateGrammarSource'
+    }
+}
+
 generateGrammarSource {
     arguments += ["-visitor", "-package", "com.example.codeditor.antlr"]
     outputDirectory = file("src/main/java/com/example/codeditor/antlr")
