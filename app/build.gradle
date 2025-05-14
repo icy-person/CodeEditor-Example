@@ -7,6 +7,7 @@ android {
     compileSdk 31
 
     defaultConfig {
+        namespace "com.example.codeditor"
         applicationId "com.example.codeditor"
         minSdk 26
         targetSdk 31
