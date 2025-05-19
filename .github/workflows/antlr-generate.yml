@@ -24,11 +24,16 @@ jobs:
       run: |
         curl -o antlr-4.13.1-complete.jar https://www.antlr.org/download/antlr-4.13.1-complete.jar
 
-    - name: Generate ANTLR sources
+    - name: Generate ANTLR sources (Lexer first, then Parser)
       run: |
         mkdir -p app/src/main/java/com/example/codeditor/antlr
-        for file in app/src/main/antlr/*.g4; do
-          java -jar antlr-4.13.1-complete.jar -Dlanguage=Java -visitor -package com.example.codeditor.antlr -o app/src/main/java/com/example/codeditor/antlr "$file"
+        # اول همه فایل‌های Lexer.g4 را تولید کن
+        for file in app/src/main/antlr/*JavaLexer.g4; do
+          [ -e "$file" ] && java -jar antlr-4.13.1-complete.jar -Dlanguage=Java -visitor -package com.example.codeditor.antlr -o app/src/main/java/com/example/codeditor/antlr "$file"
+        done
+        # بعد همه فایل‌های Parser.g4 را تولید کن
+        for file in app/src/main/antlr/*JavaParser.g4; do
+          [ -e "$file" ] && java -jar antlr-4.13.1-complete.jar -Dlanguage=Java -visitor -package com.example.codeditor.antlr -o app/src/main/java/com/example/codeditor/antlr "$file"
         done
 
     - name: Commit and push generated sources
