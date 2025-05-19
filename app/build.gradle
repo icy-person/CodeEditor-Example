@@ -25,25 +25,21 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
 }
-    
+
 dependencies {
-	// CodeAssist does NOT support adding dependencies here,
-	// try using the library manager instead
     implementation 'com.fifesoft:rsyntaxtextarea:3.3.0'
-	antlr 'org.antlr:antlr4:4.13.1' 
+    antlr 'org.antlr:antlr4:4.13.1'
     implementation 'org.antlr:antlr4-runtime:4.9.3'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'org.eclipse.jdt:org.eclipse.jdt.core:3.40.0'
 }
 
-task generateGrammarSource {
-    maxHeapSize = "64m"
+antlr {
     arguments += ['-visitor', '-package', 'com.example.codeditor.antlr']
     outputDirectory = file("src/main/java/com/example/codeditor/antlr")
 }
 
-tasks.register('generateParser', Exec) {
-    dependsOn generateGrammarSource
+tasks.register('generateParser') {
+    dependsOn tasks.generateGrammarSource
 }
