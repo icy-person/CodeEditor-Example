@@ -27,7 +27,7 @@ jobs:
     - name: Generate ANTLR sources
       run: |
         mkdir -p app/src/main/java/com/example/codeditor/antlr
-        for file in app/grammars/*.g4; do
+        for file in app/src/main/antlr/*.g4; do
           java -jar antlr-4.13.1-complete.jar -Dlanguage=Java -visitor -package com.example.codeditor.antlr -o app/src/main/java/com/example/codeditor/antlr "$file"
         done
 
