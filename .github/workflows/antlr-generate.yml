@@ -1,1 +1,40 @@
+name: Generate ANTLR Sources
 
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'app/src/main/antlr/**/*.g4'
+
+jobs:
+  generate-antlr:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Download ANTLR tool
+      run: |
+        curl -o antlr-4.13.1-complete.jar https://www.antlr.org/download/antlr-4.13.1-complete.jar
+
+    - name: Generate ANTLR sources
+      run: |
+        mkdir -p app/src/main/java/com/example/codeditor/antlr
+        for file in app/grammars/*.g4; do
+          java -jar antlr-4.13.1-complete.jar -Dlanguage=Java -visitor -package com.example.codeditor.antlr -o app/src/main/java/com/example/codeditor/antlr "$file"
+        done
+
+    - name: Commit and push generated sources
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add app/src/main/java/com/example/codeditor/antlr
+        git commit -m "Generate ANTLR sources [skip ci]" || echo "No changes to commit"
+        git push
