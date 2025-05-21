@@ -25,29 +25,29 @@ jobs:
         curl -o antlr-4.13.1-complete.jar https://www.antlr.org/download/antlr-4.13.1-complete.jar
 
     - name: Generate ANTLR sources
-      run: |
-        mkdir -p app/src/main/java/com/example/codeditor/antlr
-        
-        # Generate Lexers
-        for file in app/src/main/antlr/*JavaLexer.g4; do
-          [ -e "$file" ] && java -jar antlr-4.13.1-complete.jar \
-            -Dlanguage=Java \
-            -visitor \
-            -package com.example.codeditor.antlr \
-            -o app/src/main/java/com/example/codeditor/antlr \
-            "$file"
-        done
+  run: |
+    mkdir -p app/src/main/java/com/example/codeditor/antlr
+    
+    # Generate Lexers
+    for file in app/src/main/antlr/*JavaLexer.g4; do
+      [ -e "$file" ] && java -jar antlr-4.13.1-complete.jar \
+        -Dlanguage=Java \
+        -visitor \
+        -package com.example.codeditor.antlr \
+        -o app/src/main/java/com/example/codeditor/antlr \
+        "$file"
+    done
 
-        # Generate Parsers with token library
-        for file in app/src/main/antlr/*JavaParser.g4; do
-          [ -e "$file" ] && java -jar antlr-4.13.1-complete.jar \
-            -Dlanguage=Java \
-            -visitor \
-            -package com.example.codeditor.antlr \
-            -lib app/src/main/java/com/example/codeditor/antlr \
-            -o app/src/main/java/com/example/codeditor/antlr \
-            "$file"
-        done
+    # Generate Parsers with token library
+    for file in app/src/main/antlr/*JavaParser.g4; do
+      [ -e "$file" ] && java -jar antlr-4.13.1-complete.jar \
+        -Dlanguage=Java \
+        -visitor \
+        -package com.example.codeditor.antlr \
+        -lib app/src/main/java/com/example/codeditor/antlr \ # اشاره به مسیر توکن‌ها
+        -o app/src/main/java/com/example/codeditor/antlr \
+        "$file"
+    done
 
     - name: Commit and push generated sources
       run: |
