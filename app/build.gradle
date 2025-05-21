@@ -34,12 +34,3 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'org.eclipse.jdt:org.eclipse.jdt.core:3.40.0'
 }
-
-antlr {
-    arguments += ['-visitor', '-package', 'com.example.codeditor.antlr']
-    outputDirectory = file("src/main/java/com/example/codeditor/antlr")
-}
-
-tasks.register('generateParser') {
-    dependsOn tasks.generateGrammarSource
-}
