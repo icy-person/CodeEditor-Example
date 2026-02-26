@@ -1,6 +1,11 @@
 plugins {
     id 'com.android.application'
-    // پلاگین antlr را حذف کنید
+    // پلاگین antrl حذف شده
+}
+
+// تعریف configuration برای ابزار ANTLR
+configurations {
+    antlr
 }
 
 android {
@@ -47,7 +52,7 @@ task generateGrammarSource(type: JavaExec) {
     outputs.dir outputDir
 
     main = 'org.antlr.v4.Tool'
-    classpath = configurations.antlr
+    classpath = configurations.antlr   // حالا این configuration وجود دارد
     args = [
         parserGrammar.path,           // فایل گرامر اصلی
         '-o', outputDir.path,         // مسیر خروجی
@@ -61,7 +66,7 @@ task generateGrammarSource(type: JavaExec) {
 preBuild.dependsOn generateGrammarSource
 
 dependencies {
-    // وابستگی برای اجرای ابزار ANTLR (نیاز task)
+    // وابستگی برای اجرای ابزار ANTLR (در configuration مخصوص)
     antlr 'org.antlr:antlr4:4.13.1'
 
     // وابستگی runtime برای استفاده از کدهای تولیدشده (هم‌نسخه با ابزار)
