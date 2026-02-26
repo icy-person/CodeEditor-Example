@@ -1,6 +1,6 @@
 plugins {
     id 'com.android.application'
-    id 'antlr'
+    // پلاگین antlr را حذف کنید
 }
 
 android {
@@ -25,12 +25,50 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    // اضافه کردن مسیر کدهای تولیدشده به sourceSets
+    sourceSets {
+        main {
+            java.srcDirs += 'build/generated/source/antlr/main'
+        }
+    }
 }
 
+// تعریف task برای اجرای ANTLR روی گرامر جاوا
+task generateGrammarSource(type: JavaExec) {
+    // مسیر فایل‌های گرامر (مطابق ساختار شما)
+    def grammarDir = file('src/main/antlr')
+    def outputDir = file('build/generated/source/antlr/main')
+
+    // فایل اصلی گرامر (Parser) – ابزار به‌طور خودکار Lexer را هم پردازش می‌کند
+    def parserGrammar = file("$grammarDir/JavaParser.g4")
+
+    inputs.dir grammarDir
+    outputs.dir outputDir
+
+    main = 'org.antlr.v4.Tool'
+    classpath = configurations.antlr
+    args = [
+        parserGrammar.path,           // فایل گرامر اصلی
+        '-o', outputDir.path,         // مسیر خروجی
+        '-visitor',                   // تولید visitor (اختیاری)
+        '-no-listener',               // عدم تولید listener (یا می‌توانید حذف کنید)
+        '-package', 'com.example.codeditor.parser' // بسته دلخواه برای کلاس‌های تولیدی
+    ]
+}
+
+// اجرای task قبل از build
+preBuild.dependsOn generateGrammarSource
+
 dependencies {
-    implementation 'com.fifesoft:rsyntaxtextarea:3.3.0'
+    // وابستگی برای اجرای ابزار ANTLR (نیاز task)
     antlr 'org.antlr:antlr4:4.13.1'
-    implementation 'org.antlr:antlr4-runtime:4.9.3'
+
+    // وابستگی runtime برای استفاده از کدهای تولیدشده (هم‌نسخه با ابزار)
+    implementation 'org.antlr:antlr4-runtime:4.13.1'
+
+    // سایر وابستگی‌های شما
+    implementation 'com.fifesoft:rsyntaxtextarea:3.3.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'org.eclipse.jdt:org.eclipse.jdt.core:3.40.0'
 }
